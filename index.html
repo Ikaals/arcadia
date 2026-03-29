@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arcadia</title>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+    <div class="logo">Arcadia</div>
+
+    <div class="top-right">
+
+        <!-- BELUM LOGIN -->
+        <div id="guest-menu">
+            <button onclick="openLogin()">Login</button>
+            <button onclick="openRegister()">Register</button>
+        </div>
+
+        <!-- SUDAH LOGIN -->
+        <div id="user-menu" style="display:none;">
+            <span id="username-text"></span>
+
+            <div class="dl-box">
+                <span>DL:</span>
+                <span id="dl">0</span>
+                <button class="plus-btn" onclick="openDW()">+</button>
+            </div>
+
+            <button onclick="openProfile()">Profile</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+    </div>
+</div>
+
+<h1 class="title">ARCADIA GAMES</h1>
+
+<!-- MENU GAME -->
+<div class="menu">
+    <div class="card" onclick="openGame('reme')">REME</div>
+    <div class="card">TOWER<br><span>Coming Soon</span></div>
+    <div class="card">LEME<br><span>Coming Soon</span></div>
+    <div class="card">LIMBO<br><span>Coming Soon</span></div>
+</div>
+
+<!-- POPUP LOGIN -->
+<div class="popup" id="login-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeLogin()">X</span>
+        <h2>Login</h2>
+
+        <input type="text" id="login-user" placeholder="Username">
+        <input type="password" id="login-pass" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p id="login-error" style="color:red; font-size:12px;"></p>
+
+        <p style="font-size:12px; color:lightblue; cursor:pointer;" onclick="forgotWA()">
+            Lupa Password?
+        </p>
+    </div>
+</div>
+
+<!-- POPUP REGISTER -->
+<div class="popup" id="register-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeRegister()">X</span>
+        <h2>Register</h2>
+        <input type="text" id="reg-user" placeholder="Username">
+        <input type="password" id="reg-pass" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+</div>
+
+<!-- POPUP PROFILE -->
+<div class="popup" id="profile-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeProfile()">X</span>
+        <h2 id="p-username">Username</h2>
+        <p>Total DL: <span id="p-dl">0</span></p>
+        
+        <div class="stats">
+            <div class="stat">Total Game<br><span id="p-totalGame">0</span></div>
+            <div class="stat">Total Win<br><span id="p-totalWin">0</span></div>
+            <div class="stat">Total Bet<br><span id="p-totalBet">0</span></div>
+            <div class="stat">Highest Win<br><span id="p-high">0</span></div>
+            <div class="stat">Biggest Lose<br><span id="p-lose">0</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- POPUP DEPOSIT / WITHDRAW -->
+<div class="popup" id="dw-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeDW()">X</span>
+        <h3>DL Menu</h3>
+        <button onclick="openDeposit(); closeDW()">Deposit</button>
+        <button onclick="openWithdraw(); closeDW()">Withdraw</button>
+    </div>
+</div>
+
+<!-- POPUP DEPOSIT -->
+<div class="popup" id="deposit-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeDeposit()">X</span>
+        <h3>Deposit DL</h3>
+        <input type="number" id="deposit-amount" placeholder="Jumlah DL">
+        <button onclick="depositWA()">Kirim Deposit</button>
+        <p id="deposit-info"></p>
+    </div>
+</div>
+
+<!-- POPUP WITHDRAW -->
+<div class="popup" id="withdraw-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeWithdraw()">X</span>
+        <h3>Withdraw DL</h3>
+        <input type="number" id="withdraw-amount" placeholder="Jumlah DL">
+        <button onclick="withdrawWA()">Kirim Withdraw</button>
+        <p id="withdraw-info"></p>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

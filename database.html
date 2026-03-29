@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Player</title>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logo">DATABASE PLAYER</div>
+</div>
+
+<div style="width:400px; margin:30px auto;">
+    <div id="player-list"></div>
+</div>
+
+<script>
+let password = prompt("Password admin:");
+if (password !== "admin123") {
+    alert("Bukan admin");
+    window.location.href = "index.html";
+}
+
+function loadPlayers() {
+    let list = document.getElementById("player-list");
+    list.innerHTML = "";
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+
+        if (key === "loginUser") continue;
+
+        let data = JSON.parse(localStorage.getItem(key));
+
+        list.innerHTML += `
+            <div style="background:#1f2937; padding:10px; margin-bottom:10px; border-radius:8px;">
+                <b>${key}</b><br>
+                DL: ${data.dl || 0}<br>
+                Total Game: ${data.totalGame || 0}<br>
+                Total Win: ${data.totalWin || 0}
+            </div>
+        `;
+    }
+}
+
+loadPlayers();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logo">ADMIN PANEL</div>
+</div>
+
+<div style="margin:30px;">
+    <h3>Tambah / Kurang DL</h3>
+    <input type="text" id="admin-user" placeholder="Username">
+    <input type="number" id="admin-amount" placeholder="Jumlah DL">
+    <button onclick="tambahDL()">Tambah DL</button>
+    <button onclick="kurangDL()">Kurang DL</button>
+    <p id="admin-info"></p>
+</div>
+
+<hr>
+
+<div style="margin:30px;">
+    <h3>Database Player</h3>
+    <div id="db"></div>
+</div>
+
+<hr>
+
+<div style="margin:30px;">
+    <h3>History Deposit / Withdraw</h3>
+    <div id="history"></div>
+</div>
+
+<script>
+let password = prompt("Masukin password admin:");
+if (password !== "wishacantik123") {
+    alert("Bukan admin!");
+    window.location.href = "index.html";
+}
+
+/* TAMBAH DL */
+function tambahDL() {
+    let user = document.getElementById("admin-user").value;
+    let amount = parseInt(document.getElementById("admin-amount").value);
+
+    let data = JSON.parse(localStorage.getItem(user));
+    if (!data) {
+        document.getElementById("admin-info").innerText = "User tidak ada";
+        return;
+    }
+
+    data.dl = (data.dl || 0) + amount;
+    localStorage.setItem(user, JSON.stringify(data));
+    document.getElementById("admin-info").innerText = "DL berhasil ditambah";
+
+    loadDB();
+}
+
+/* KURANG DL */
+function kurangDL() {
+    let user = document.getElementById("admin-user").value;
+    let amount = parseInt(document.getElementById("admin-amount").value);
+
+    let data = JSON.parse(localStorage.getItem(user));
+    if (!data) {
+        document.getElementById("admin-info").innerText = "User tidak ada";
+        return;
+    }
+
+    if (data.dl < amount) {
+        document.getElementById("admin-info").innerText = "DL tidak cukup";
+        return;
+    }
+
+    data.dl -= amount;
+    localStorage.setItem(user, JSON.stringify(data));
+    document.getElementById("admin-info").innerText = "DL berhasil dikurangi";
+
+    loadDB();
+}
+
+/* LOAD DATABASE PLAYER */
+function loadDB() {
+    let db = document.getElementById("db");
+    db.innerHTML = "";
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+
+        if (key !== "loginUser" && key !== "isAdmin" && key !== "adminPass") {
+            let data = JSON.parse(localStorage.getItem(key));
+
+            db.innerHTML += `
+                <div style="background:#111; padding:5px; margin:5px;">
+                    User: ${key} | DL: ${data.dl || 0}
+                </div>
+            `;
+        }
+    }
+}
+
+/* LOAD HISTORY */
+function loadHistory() {
+    let historyBox = document.getElementById("history");
+    historyBox.innerHTML = "";
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+
+        if (key !== "loginUser" && key !== "isAdmin" && key !== "adminPass") {
+            let data = JSON.parse(localStorage.getItem(key));
+
+            if (data.historyDW) {
+                data.historyDW.forEach((h, index) => {
+                    historyBox.innerHTML += `
+                        <div style="background:#111; padding:10px; margin:5px;">
+                            User: ${key} <br>
+                            ${h.type} - ${h.amount} DL <br>
+                            Status: ${h.status} <br>
+                            Waktu: ${h.time} <br>
+                            <button onclick="approve('${key}', ${index})">Approve</button>
+                            <button onclick="reject('${key}', ${index})">Reject</button>
+                        </div>
+                    `;
+                });
+            }
+        }
+    }
+}
+
+/* APPROVE */
+function approve(user, index) {
+    let data = JSON.parse(localStorage.getItem(user));
+    let h = data.historyDW[index];
+
+    if (h.status !== "PENDING") return;
+
+    if (h.type === "DEPOSIT") {
+        data.dl = (data.dl || 0) + parseInt(h.amount);
+    } else if (h.type === "WITHDRAW") {
+        if (data.dl < h.amount) {
+            alert("DL user tidak cukup");
+            return;
+        }
+        data.dl -= parseInt(h.amount);
+    }
+
+    h.status = "SUCCESS";
+    localStorage.setItem(user, JSON.stringify(data));
+
+    loadHistory();
+    loadDB();
+}
+
+/* REJECT */
+function reject(user, index) {
+    let data = JSON.parse(localStorage.getItem(user));
+    data.historyDW[index].status = "REJECT";
+    localStorage.setItem(user, JSON.stringify(data));
+
+    loadHistory();
+}
+
+/* LOAD SAAT MASUK */
+loadDB();
+loadHistory();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reme</title>
+    <link rel="stylesheet" href="css/reme.css">
+</head>
+<body>
+
+<div class="topbar">
+    <div>Arcadia</div>
+    <div>
+        <span id="top-name">Guest</span> |
+        DL <span id="dl">0</span>
+    </div>
+</div>
+
+<div class="game-box">
+
+    <div class="battle">
+        <div class="player">
+            <p>ANDA</p>
+            <div class="number" id="player-number">-</div>
+            <p>Total: <span id="player-total">-</span></p>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="host">
+            <p>HOUSE</p>
+            <div class="number" id="host-number">-</div>
+            <p>Total: <span id="host-total">-</span></p>
+        </div>
+    </div>
+
+    <div class="bet-box">
+        <p>Jumlah Taruhan (DL)</p>
+        <input type="number" id="bet" placeholder="Masukkan DL">
+        <button onclick="spinReme()">TARUHAN</button>
+    </div>
+
+    <h2 id="result"></h2>
+
+    <h3>History</h3>
+    <div id="history-box" class="history-box"></div>
+
+</div>
+
+<!-- FAIRNESS BUTTON -->
+<button class="fair-btn" onclick="openFairness()">Fairness</button>
+
+<!-- FAIRNESS POPUP -->
+<div class="popup" id="fair-popup">
+    <div class="popup-box">
+        <span class="close" onclick="closeFairness()">X</span>
+        <h3>Fairness</h3>
+        <p>Client Seed: <span id="fair-client"></span></p>
+        <p>Server Seed (Hash): <span id="fair-server"></span></p>
+        <p>Nonce: <span id="fair-nonce"></span></p>
+        <p>Rumus: hash(serverSeed + clientSeed + nonce)</p>
+    </div>
+</div>
+
+<script src="js/reme.js"></script>
+
+</body>
+</html>
